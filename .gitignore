@@ -1,0 +1,79 @@
+# --- FLUTTER SECTION ---
+
+# Dart & Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+**/doc/api/
+
+# iOS & macOS
+ios/Flutter/.last_build_id
+macos/Flutter/ephemeral/
+*.xcworkspace
+*.xcuserstate
+*.xcuserdatad
+*.lock
+Pods/
+Podfile.lock
+DerivedData/
+Runner.xcodeproj/project.xcworkspace/
+
+# Android
+.android/
+.gradle/
+**/android/local.properties
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+
+# Symbolication / obfuscation
+app.*.map.json
+app.*.symbols
+
+# IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Misc
+*.log
+
+# --- NODE.JS BACKEND SECTION ---
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment secrets
+.env
+.env.*  # like .env.development, .env.production, etc.
+
+# Runtime
+pids/
+*.pid
+*.pid.lock
+
+# Build output
+dist/
+coverage/
+
+# Others
+logs/
+*.tgz
+*.bak
+*.swp
+*.tmp

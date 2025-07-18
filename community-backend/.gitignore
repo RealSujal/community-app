@@ -1,0 +1,42 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# dotenv environment files (store secrets like DB and JWT keys)
+.env
+.env.*  # in case you have multiple like .env.production, .env.dev, etc.
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Build output (if using TypeScript or bundlers)
+dist/
+build/
+
+# Coverage directory used by testing tools
+coverage/
+
+# Misc
+*.tgz
+*.bak
+*.swp
+*.tmp
