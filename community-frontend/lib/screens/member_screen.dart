@@ -374,11 +374,11 @@ class _MemberScreenState extends State<MemberScreen> {
                       PopupMenuItem<String>(
                         value: 'promote',
                         child: Row(
-                          children: [
+                          children: const [
                             Icon(Icons.arrow_upward,
                                 color: Colors.white, size: 18),
-                            const SizedBox(width: 12),
-                            const Text(
+                            SizedBox(width: 12),
+                            Text(
                               'Promote to Admin',
                               style: TextStyle(color: Colors.white),
                             ),
@@ -389,11 +389,11 @@ class _MemberScreenState extends State<MemberScreen> {
                       PopupMenuItem<String>(
                         value: 'demote',
                         child: Row(
-                          children: [
+                          children: const [
                             Icon(Icons.arrow_downward,
                                 color: Colors.orange, size: 18),
-                            const SizedBox(width: 12),
-                            const Text(
+                            SizedBox(width: 12),
+                            Text(
                               'Demote to Member',
                               style: TextStyle(color: Colors.orange),
                             ),
@@ -403,10 +403,10 @@ class _MemberScreenState extends State<MemberScreen> {
                     PopupMenuItem<String>(
                       value: 'remove',
                       child: Row(
-                        children: [
+                        children: const [
                           Icon(Icons.delete, color: Colors.red, size: 18),
-                          const SizedBox(width: 12),
-                          const Text(
+                          SizedBox(width: 12),
+                          Text(
                             'Remove Member',
                             style: TextStyle(color: Colors.red),
                           ),

@@ -9,6 +9,7 @@
 .pub/
 build/
 **/doc/api/
+community-frontend/lib/constants/constants.dart
 
 # iOS & macOS
 ios/Flutter/.last_build_id

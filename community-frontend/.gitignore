@@ -54,3 +54,4 @@ GoogleService-Info.plist
 *.tmp
 *.bak
 *.orig
+community-frontend/lib/constants/constants.dart
