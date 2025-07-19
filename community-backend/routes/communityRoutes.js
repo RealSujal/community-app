@@ -3,7 +3,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/db');
 const authMiddleware = require('../middleware/authMiddleware');
-
+const dotenv = require('dotenv');
+dotenv.config();
 
 const generateInviteCode = () => Math.random().toString(36).substring(2, 8).toUpperCase();
 
@@ -75,7 +76,7 @@ router.get('/members', authMiddleware, (req, res) => {
         const communityId = results[0].community_id;
         let membersSql = `
             SELECT 
-                u.id, u.name, u.email, u.phone, u.profile_picture, cu.role
+                u.id, u.name, u.email, u.phone, u.location, u.profile_picture, cu.role
             FROM users u
             JOIN community_user cu ON u.id = cu.user_id
             WHERE cu.community_id = ?
@@ -106,14 +107,18 @@ router.get('/members', authMiddleware, (req, res) => {
                 return res.status(500).json({ message: "DB error" });
             }
 
+            console.log("🔍 Raw members from DB:", members);
+
             // Attach full URL for profile picture
-            const baseUrl = process.env.BASE_URL;
+            const baseUrl = process.env.BASE_URL || 'http://192.168.1.7:3000';
             const formattedMembers = members.map(member => ({
                 ...member,
                 profile_picture: member.profile_picture
                     ? `${baseUrl}/${member.profile_picture.replace(/\\/g, '/')}`
                     : null
             }));
+
+            console.log("📋 Formatted members:", formattedMembers);
 
             return res.status(200).json({
                 message: "Members fetched successfully",

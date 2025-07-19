@@ -188,6 +188,7 @@ router.get('/feed', authMiddleware, (req, res) => {
                 return res.status(500).json({ message: 'Failed to fetch feed', error: err2 });
             }
 
+            const baseUrl = process.env.BASE_URL || 'http://192.168.1.7:3000';
             const formattedPosts = posts.map(post => ({
                 ...post,
                 user_id: post.user_id,

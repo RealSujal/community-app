@@ -48,8 +48,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.statusCode == 200) {
         final token = data['token'];
+        final user = data['user'];
+
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
+        await prefs.setInt('userId', user['id']);
 
         // 🔍 Check if user is already in a community
         final communityCheckRes = await http.get(
