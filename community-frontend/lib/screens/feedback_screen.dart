@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:community_frontend/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FeedbackScreen extends StatefulWidget {
@@ -31,7 +31,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     final token = prefs.getString('token') ?? '';
 
     final response = await http.post(
-      Uri.parse('http://192.168.1.12:3000/api/feedback'),
+      Uri.parse('$baseUrl/api/feedback'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',

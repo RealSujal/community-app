@@ -180,7 +180,7 @@ router.get('/feed', authMiddleware, (req, res) => {
         ORDER BY p.created_at DESC
         `;
 
-        const baseUrl = process.env.API_URL || 'http://192.168.1.12:3000';
+        const baseUrl = process.env.API_URL || process.env.BASE_URL;
 
         db.query(postsSql, [userId, communityId], (err2, posts) => {
             if (err2) {
@@ -188,7 +188,7 @@ router.get('/feed', authMiddleware, (req, res) => {
                 return res.status(500).json({ message: 'Failed to fetch feed', error: err2 });
             }
 
-            const baseUrl = process.env.BASE_URL || 'http://192.168.1.7:3000';
+            const baseUrl = process.env.BASE_URL || process.env.API_URL;
             const formattedPosts = posts.map(post => ({
                 ...post,
                 user_id: post.user_id,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:community_frontend/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatSupportScreen extends StatefulWidget {
@@ -32,7 +33,7 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
       final token = prefs.getString('token');
 
       final response = await http.post(
-        Uri.parse('http://192.168.1.12:3000/api/ai-chat'),
+        Uri.parse('$baseUrl/api/ai-chat'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

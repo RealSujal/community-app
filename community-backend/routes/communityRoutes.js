@@ -110,7 +110,7 @@ router.get('/members', authMiddleware, (req, res) => {
             console.log("🔍 Raw members from DB:", members);
 
             // Attach full URL for profile picture
-            const baseUrl = process.env.BASE_URL || 'http://192.168.1.7:3000';
+            const baseUrl = process.env.BASE_URL || process.env.API_URL;
             const formattedMembers = members.map(member => ({
                 ...member,
                 profile_picture: member.profile_picture

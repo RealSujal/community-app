@@ -60,9 +60,5 @@ const HOST = "0.0.0.0";
 
 app.listen(PORT, HOST, () => {
     console.log(`Server running on http://${HOST}:${PORT}`);
-<<<<<<< HEAD
-    console.log(`Also accessible at http://192.168.1.7:${PORT}`);
-=======
-    console.log(`Also accessible at http://192.xxx.x.x:${PORT}`);
->>>>>>> 3e12e06e9c22010d8c0805c23dd67670977b0049
+    console.log(`Also accessible at http://192.168.1.9:${PORT}`);
 });

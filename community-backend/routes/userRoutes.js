@@ -121,7 +121,7 @@ router.get('/me', authMiddleware, (req, res) => {
         }
 
         const user = results[0];
-        const baseUrl = process.env.API_URL || process.env.BASE_URL || 'http://192.168.1.7:3000';
+        const baseUrl = process.env.API_URL || process.env.BASE_URL;
         const profilePictureUrl = user.profile_picture
             ? `${baseUrl}/${user.profile_picture.replace(/\\/g, '/')}`
             : null;
@@ -154,7 +154,7 @@ router.get('/user/:userId', authMiddleware, (req, res) => {
         }
 
         const user = results[0];
-        const baseUrl = process.env.BASE_URL || 'http://192.168.1.7:3000';
+        const baseUrl = process.env.BASE_URL || process.env.API_URL;
 
         res.status(200).json({
             message: 'User fetched successfully',
@@ -259,7 +259,7 @@ router.get('/:userId', authMiddleware, (req, res) => {
 
         const user = results[0];
         if (user.profile_picture) {
-            const baseUrl = process.env.API_URL || process.env.BASE_URL || 'http://192.168.1.7:3000';
+            const baseUrl = process.env.API_URL || process.env.BASE_URL;
             user.profile_picture = `${baseUrl}/${user.profile_picture.replace(/^\/+/g, '')}`;
         }
 
