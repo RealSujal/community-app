@@ -29,29 +29,46 @@ const upload = multer({ storage, fileFilter });
 
 
 //  Create a post
-router.post('/create', authMiddleware, upload.single('media'), (req, res) => {
+router.post('/create', authMiddleware, upload.array('media', 5), (req, res) => {
     const userId = req.user.userId;
-    const content = req.body?.content || null;
+    const content = req.body?.content || ''; // Use empty string instead of null
 
-    if (!content && !req.file)
+    console.log('Create post request received:');
+    console.log('- User ID:', userId);
+    console.log('- Content:', content);
+    console.log('- Files:', req.files ? req.files.length : 'none');
+
+    if (!content && (!req.files || req.files.length === 0))
         return res.status(400).json({ message: 'Content or media is required' });
 
     const getCommunity = `SELECT community_id FROM community_user WHERE user_id = ?`;
     db.query(getCommunity, [userId], (err, results) => {
-        if (err || results.length === 0)
+        if (err || results.length === 0) {
+            console.error('Community query error:', err);
+            console.log('Community results:', results);
             return res.status(400).json({ message: 'User not part of any community' });
+        }
 
         const communityId = results[0].community_id;
-        const mediaUrl = req.file ? `/uploads/posts/${req.file.filename}` : null;
+        const mediaUrls = req.files.map(file => `/uploads/posts/${file.filename}`);
+        console.log('Media URLs:', mediaUrls);
+
+        // Convert array to JSON string for database storage
+        const mediaUrlsJson = JSON.stringify(mediaUrls);
+        console.log('Media URLs JSON:', mediaUrlsJson);
 
         const insertPost = `
         INSERT INTO posts (community_id, user_id, content, media_url)
         VALUES (?, ?, ?, ?)
       `;
-        db.query(insertPost, [communityId, userId, content, mediaUrl], (err2) => {
-            if (err2)
+        console.log('Inserting post with values:', [communityId, userId, content, mediaUrlsJson]);
+        db.query(insertPost, [communityId, userId, content, mediaUrlsJson], (err2) => {
+            if (err2) {
+                console.error('Post creation error:', err2);
                 return res.status(500).json({ message: 'Post creation failed', error: err2 });
+            }
 
+            console.log('Post created successfully');
             res.status(201).json({ message: 'Post created' });
         });
     });
@@ -87,7 +104,7 @@ router.post('/:postId/comment', authMiddleware, (req, res) => {
     const userId = req.user.userId;
     const { comment } = req.body;
 
-    if (!comment || content.trim() === '') return res.status(400).json({ message: 'Comment is required' });
+    if (!comment || comment.trim() === '') return res.status(400).json({ message: 'Comment is required' });
 
     const sql = `INSERT INTO comments (post_id, user_id, comment) VALUES (?, ?, ?)`;
     db.query(sql, [postId, userId, comment], (err, result) => {
@@ -101,7 +118,7 @@ router.post('/:postId/comment', authMiddleware, (req, res) => {
 
     // After inserting comment successfully...
     const getPostOwnerSql = `SELECT user_id FROM posts WHERE id = ?`;
-    db.query(getPostOwnerSql, [post_id], (err, result) => {
+    db.query(getPostOwnerSql, [postId], (err, result) => {
         if (!err && result.length > 0) {
             const postOwnerId = result[0].user_id;
 

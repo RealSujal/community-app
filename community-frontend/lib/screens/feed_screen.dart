@@ -106,7 +106,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         authorImageUrl: post['profile_picture'],
                         timeAgo: _formatTime(post['created_at']),
                         content: post['content'] ?? '',
-                        imageUrl: post['image_url'],
+                        mediaUrl: post['media_url'],
                         isLiked: (post['is_liked'] ?? 0) == 1,
                         likeCount: post['like_count'] ?? 0,
                         commentCount: post['comment_count'] ?? 0,
