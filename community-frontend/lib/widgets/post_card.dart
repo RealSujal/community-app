@@ -17,6 +17,11 @@ class PostCard extends StatefulWidget {
   final bool isLiked;
   final VoidCallback onLike;
   final VoidCallback onComment;
+  // New props for delete logic
+  final int? postId;
+  final int? currentUserId;
+  final String? currentUserRole;
+  final VoidCallback? onDelete;
 
   const PostCard({
     super.key,
@@ -31,6 +36,10 @@ class PostCard extends StatefulWidget {
     required this.isLiked,
     required this.onLike,
     required this.onComment,
+    this.postId,
+    this.currentUserId,
+    this.currentUserRole,
+    this.onDelete,
   });
 
   @override
@@ -184,6 +193,10 @@ class _PostCardState extends State<PostCard> {
   }
 
   Widget _buildHeader(BuildContext context) {
+    final canDelete = (widget.currentUserId != null &&
+        (widget.currentUserId == widget.userId ||
+            widget.currentUserRole == 'admin' ||
+            widget.currentUserRole == 'head'));
     return Row(
       children: [
         GestureDetector(
@@ -245,9 +258,62 @@ class _PostCardState extends State<PostCard> {
         ),
         IconButton(
           icon: const Icon(Icons.more_vert, color: Colors.white54),
-          onPressed: () {},
+          onPressed: canDelete
+              ? () {
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.grey[900],
+                    shape: const RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(16))),
+                    builder: (context) => SafeArea(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTile(
+                            leading:
+                                const Icon(Icons.delete, color: Colors.red),
+                            title: const Text('Delete Post',
+                                style: TextStyle(color: Colors.red)),
+                            onTap: () {
+                              Navigator.pop(context);
+                              _confirmDelete(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              : null,
         ),
       ],
+    );
+  }
+
+  void _confirmDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Colors.grey[900],
+        title: const Text('Delete Post', style: TextStyle(color: Colors.red)),
+        content: const Text('Are you sure you want to delete this post?',
+            style: TextStyle(color: Colors.white70)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              if (widget.onDelete != null) widget.onDelete!();
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -276,7 +342,6 @@ class _PostCardState extends State<PostCard> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final maxWidth = constraints.maxWidth;
-          // Fixed height for Twitter-like cropped preview
           final previewHeight = maxWidth * 0.6;
 
           return ClipRRect(
@@ -536,9 +601,6 @@ class _PostCardState extends State<PostCard> {
           icon: Icons.comment_outlined,
           label: widget.commentCount.toString(),
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Comment feature coming soon')),
-            );
             widget.onComment();
           },
         ),
@@ -565,14 +627,17 @@ class _PostCardState extends State<PostCard> {
     required String label,
     required VoidCallback onTap,
   }) {
+    final isLike = icon == Icons.favorite || icon == Icons.favorite_border;
+    final isLiked = isLike && widget.isLiked;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20),
       child: Row(
         children: [
-          Icon(icon, color: Colors.white, size: 20),
+          Icon(icon, color: isLiked ? Colors.red : Colors.white, size: 20),
           const SizedBox(width: 4),
-          Text(label, style: const TextStyle(color: Colors.white)),
+          Text(label,
+              style: TextStyle(color: isLiked ? Colors.red : Colors.white)),
         ],
       ),
     );

@@ -254,7 +254,7 @@ router.get('/:postId/comments', authMiddleware, (req, res) => {
     });
 });
 
-router.delete('/posts/:postId', authMiddleware, (req, res) => {
+router.delete('/:postId', authMiddleware, (req, res) => {
     const postId = req.params.postId;
     const userId = req.user.userId;
 

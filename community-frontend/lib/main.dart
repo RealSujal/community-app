@@ -23,6 +23,7 @@ import 'package:community_frontend/screens/register_screen.dart';
 import 'package:community_frontend/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/entry_screen.dart';
+import 'screens/comment_screen.dart';
 
 void main() {
   runApp(CommunityApp());
@@ -63,6 +64,14 @@ class CommunityApp extends StatelessWidget {
         '/user-profile': (context) {
           final args = ModalRoute.of(context)!.settings.arguments as Map;
           return UserProfileScreen(userId: args['userId']);
+        },
+        '/comments': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Map?;
+          return CommentScreen(
+            postId: args?['postId'],
+            currentUserId: args?['currentUserId'],
+            currentUserRole: args?['currentUserRole'],
+          );
         },
       },
       // Add onGenerateRoute to handle dynamic args like person
