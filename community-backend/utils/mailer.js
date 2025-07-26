@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
 dotenv.config();
 
-// ✅ Setup transporter using Gmail + environment variables
+//  Setup transporter using Gmail + environment variables
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
@@ -23,7 +23,7 @@ const transporter = nodemailer.createTransport({
 const sendOTPEmail = async (toEmail, otp, purpose = 'register') => {
     const from = `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_FROM_ADDRESS}>`;
 
-    // 🔁 Dynamic subject and message
+    //  Dynamic subject and message
     const subject =
         purpose === 'reset'
             ? 'Your OTP to Reset Password'
